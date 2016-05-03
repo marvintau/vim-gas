@@ -41,7 +41,8 @@ syn keyword gasDirective	.vtable_entry .vtable_inherit .warning .weak .weakref
 syn keyword gasDirectiveStore	.byte .hword .word .int .long .double .short .float
 syn keyword gasDirectiveStore	.string .string8 .string16 .ascii .asciz .comm
 
-syn keyword gasDirectiveMacro	.altmacro .macro .noaltmacro .endm .func .endfunc
+syn keyword gasDirectiveMacro	.altmacro .macro .noaltmacro .endm .func .endfunc nextgroup=gasMacroName skipwhite
+syn match   gasMacroName        /\<[a-zA-Z0-9]*\>/ 
 
 " i*86 directives
 syn keyword gasDirectiveX86	.att_syntax .intel_syntax .att_mnemonic .intel_mnemonic .lcomm
@@ -1945,12 +1946,13 @@ hi def link gasDecimalNumber	Constant
 hi def link gasSymbol		Function
 hi def link gasSymbolRef	Special
 hi def link gasSpecial		Special
-hi def link gasLabel		Function
-hi def link gasLocalLabel	Label
+hi def link gasLabel	        Identifier	
+hi def link gasLocalLabel       Identifier	
 hi def link gasOperator		Operator
 hi def link gasOpcode		Keyword
 hi def link gasComment		Comment
 hi def link gasCommentSingle	Comment
+hi def gasMacroName             term=bold cterm=bold gui=bold        
 
 "-- initial mapping => Keyword
 func! s:MapOpcode (group, cpu, ext)
@@ -2021,6 +2023,8 @@ if !exists('g:gasDisablePreproc') && !exists('b:gasDisablePreproc')
 
 	syn region  cPPPreProc start=/^\s*#\s*\(if\|else\|endif\|define\|include\)/ end=/$/ contains=@cPP,cPPLineCont
 endif
+
+" highlight the name of macro
 
 " finishing touches
 let b:current_syntax = "gas"
